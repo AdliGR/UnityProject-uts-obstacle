@@ -4,25 +4,18 @@ using UnityEngine;
 
 public class ParticelSystem : MonoBehaviour
 {
-    public ParticleSystem particleSystemToActivate;
-    
-    // Start is called before the first frame update
+    public Transform playerTransform; // referensi transform pemain
+    private Vector3 offset; // jarak antara pemain dan partikel
+
     void Start()
     {
-        
+        offset = transform.position - playerTransform.position; // menghitung jarak awal
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            particleSystemToActivate.gameObject.SetActive(true);
-        }
+        // mengikuti posisi dan rotasi pemain
+        transform.position = playerTransform.position + offset;
+        transform.rotation = playerTransform.rotation * Quaternion.Euler(0, 180, 0);
     }
 }
