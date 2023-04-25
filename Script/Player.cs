@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5.0f; // kecepatan gerakan
-    public float rotationSpeed = 100.0f; // kecepatan rotasi
-    public float pushForce = 100.0f; // gaya dorongan saat terkena obstacle
-    public float jumpForce = 30.0f; // gaya lompatan
+    public float speed = 5.0f;
+    public float rotationSpeed = 100.0f;
+    public float pushForce = 100.0f;
+    public float jumpForce = 30.0f;
 
-     private Rigidbody rb;
+    private Rigidbody rb;
+    private GameObject spawnPosition;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        spawnPosition = GameObject.FindGameObjectWithTag("SpawnPoint");
     }
 
     // Update is called once per frame
@@ -43,6 +45,11 @@ public class Player : MonoBehaviour
             // terapkan gaya dorongan ke pemain
             Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
             rb.AddForce(pushDirection * pushForce);
+        } 
+        else if (collision.gameObject.CompareTag("ObstacleRes"))
+        {
+            // Teleport player to spawn position
+            transform.position = spawnPosition.transform.position;
         }
     }
 }
